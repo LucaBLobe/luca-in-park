@@ -1,0 +1,62 @@
+<div class="vaga-box">
+    <button (click)="mostrarForm = !mostrarForm">Cadastrar nova vaga</button>
+    <div class="input-box">
+        <label>Procurar</label>
+        <input type="text" placeholder="buscar registro de vaga">
+    </div>
+</div>
+
+<div *ngIf="mostrarForm">
+    <h2>Cadastrar Vaga</h2>
+    <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
+        <label for="placa">Placa:</label>
+        <input type="text" id="placa" name="placa" required>
+        <br><br>
+
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" name="modelo" required>
+        <br><br>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Placa</th>
+            <th>Modelo</th>
+            <th>Horário de Entrada</th>
+            <th>Horário de Saída</th>
+            <th>Tempo de Permanência</th>
+            <th>Bandeira</th>
+            <th>Valor Hora</th>
+            <th>Valor Total</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let veiculo of veiculos">
+            <td></td>
+            <td>{{ veiculo.placa }}</td>
+            <td>{{ veiculo.modelo }}</td>
+            <td>{{ veiculo.startTime }}</td>
+            <td>{{ veiculo.endTime }}</td>
+            <td>{{ veiculo.duration }}</td>
+            <td>{{ veiculo.costFlag }}</td>
+            <td>{{ veiculo.precoUnitario | number:'1.2-2'}}</td>
+            <td>{{ veiculo.precoFinal | number:'1.2-2'}}</td>
+            <div *ngIf="veiculo.active == true">
+            <td>ativo</td>
+            </div>
+            <div *ngIf="veiculo.active == false">
+            <td>inativo</td >
+            </div>
+            <td>
+                <button (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
+                <button (click)="deleteVeiculo(veiculo.veiculoId)">Excluir</button>
+            </td>
+        </tr>
+    </tbody>
+ </table>
