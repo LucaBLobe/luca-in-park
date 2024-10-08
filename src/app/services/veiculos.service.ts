@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Veiculo } from '../Models/Veiculos';
 
 @Injectable({
@@ -10,6 +10,15 @@ import { Veiculo } from '../Models/Veiculos';
 export class VeiculosService {
 
  private apiUrl = `${environment.ApiUrl}`
+
+ httpOptions = {
+  headers: new HttpHeaders({
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+  'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+})};
+
 
   constructor(private http: HttpClient) { }
 
@@ -21,20 +30,31 @@ export class VeiculosService {
   const id = veiculoId;
   console.log(veiculoId)
   console.log(`${this.apiUrl}/Checkout/${id}`, {})
-  return this.http.put<string>(`${this.apiUrl}/Checkout/${id}`, {});
+  this.http.patch<string>(`${this.apiUrl}/Checkout/${id}`, null, this.httpOptions).subscribe((data) => {
+    console.log("request ok", data);
+  });
+  return this.http.patch<string>(`${this.apiUrl}/Checkout/${id}`, null, this.httpOptions);
    
 }
 
-CadastrarVaga(cadastro: { modelo: string; placa: string }): Observable<string> {
-  console.log("oi 2")
-  return this.http.post<string>(`${this.apiUrl}/Create`, {cadastro});
+
+CadastrarVaga(cadastro: { modelo: string; placa: string }): Observable<any[]> {
+  console.log(cadastro)
+  console.log(`${this.apiUrl}/Create`, cadastro)
+  // this.http.post<string[]>(`${this.apiUrl}/Create`, cadastro,  this.httpOptions ).subscribe((data) => {
+  //   console.log("request ok", data);
+  // });
+  return this.http.post<string[]>(`${this.apiUrl}/Create`, cadastro,  this.httpOptions );
 }
 
 DeleteVeiculos(veiculoId: string) : Observable<string> {
   const id = veiculoId;
   console.log(veiculoId)
-  console.log(`${this.apiUrl}/DeletebyId/${id}`, {})
-  return this.http.delete<string>(`${this.apiUrl}/DeletebyId/${id}`, {});
+  console.log(`${this.apiUrl}/DeletebyId/${id}`)
+  this.http.delete<string>(`${this.apiUrl}/DeletebyId/${id}`).subscribe((data) => {
+    console.log("request ok", data);
+  });
+  return this.http.delete<string>(`${this.apiUrl}/DeletebyId/${id}`);
    
 }
   

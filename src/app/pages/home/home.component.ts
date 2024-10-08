@@ -14,8 +14,8 @@ export class HomeComponent implements OnInit {
   veiculos: Veiculo[] = [];
   veiculosGeral: Veiculo[] = [];
   mostrarForm = false;
-  modelo: string = '';
-  placa: string = '';
+  vaga = { modelo: '', placa: ''};
+  
 
 
   constructor( private veiculosSevice: VeiculosService)
@@ -46,28 +46,25 @@ export class HomeComponent implements OnInit {
   checkVeiculo(veiculoId: string) {
    this.veiculosSevice.CheckVeiculos(veiculoId);
    console.log(veiculoId)
+   this.reloadPage();
  }
 
  cadastrarVaga() {
-  const cadastro: CadastroVaga = { modelo: this.modelo, placa: this.placa };
-  console.log("oi4")
-  this.veiculosSevice.CadastrarVaga(cadastro).subscribe({
-    next: (response) => {
-      console.log('Vaga cadastrada com sucesso!', response);
-      this.modelo = '';
-      this.placa = '';
-      console.log("oi1")
+  this.veiculosSevice.CadastrarVaga(this.vaga).subscribe(
+    (resposta) => {
+      console.log('Vaga cadastrada com sucesso:', resposta);
     },
-    error: (error) => {
-      console.error('Erro ao cadastrar vaga:', error);
-      console.log("oi3")
+    (erro) => {
+      console.error('Erro ao cadastrar vaga:', erro);
     }
-  });
+  );
+  this.reloadPage();
 }
 
 deleteVeiculo(veiculoId: string) {
   this.veiculosSevice.DeleteVeiculos(veiculoId);
   console.log(veiculoId)
+  this.reloadPage();
 }
 
   formatDecimal(value: number):
@@ -75,14 +72,20 @@ deleteVeiculo(veiculoId: string) {
 
   }
 
-  // search(event : Event){
-  //   const target = event.target as HTMLInputElement;
-  //   const value = target.value.toLowerCase();
+  search(event : Event){
+    const target = event.target as HTMLInputElement;
+    const value = target.value.toLowerCase();
+    console.log(target)
+    console.log(value)
 
-  //   this.veiculos = this.veiculosGeral.filter(veiculo => {
-  //     return veiculo.placa.toLowerCase().includes(value);
-  //   })
-  // }
 
+    this.veiculos = this.veiculosGeral.filter(veiculo => {
+      return veiculo.placa.toLowerCase().includes(value);
+    })
+  }
+
+  reloadPage() {
+    window.location.reload();
+  }
 
 }

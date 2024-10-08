@@ -2,7 +2,7 @@
     <button (click)="mostrarForm = !mostrarForm">Cadastrar nova vaga</button>
     <div class="input-box">
         <label>Procurar</label>
-        <input type="text" placeholder="buscar registro de vaga">
+        <input type="text" placeholder="buscar registro de vaga" (input)="search($event)">
     </div>
 </div>
 
@@ -10,11 +10,11 @@
     <h2>Cadastrar Vaga</h2>
     <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
         <label for="placa">Placa:</label>
-        <input type="text" id="placa" name="placa" required>
+        <input [(ngModel)]="vaga.placa" type="text" id="placa" name="placa" required>
         <br><br>
 
         <label for="modelo">Modelo:</label>
-        <input type="text" id="modelo" name="modelo" required>
+        <input [(ngModel)]="vaga.modelo" type="text" id="modelo"  name="modelo" required>
         <br><br>
 
         <button type="submit">Cadastrar</button>
