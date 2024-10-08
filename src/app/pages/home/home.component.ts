@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
   this.veiculosSevice.GetVeiculos().subscribe(
     (data) =>{ if(Array.isArray(data)){}
     console.log(data)
+      this.veiculosGeral = data
       this.veiculos = data;
       data.map((item) => {
                 item.startTime = new Date(item.startTime!).toLocaleTimeString('pt-BR');

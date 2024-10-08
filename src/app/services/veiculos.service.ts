@@ -33,7 +33,7 @@ export class VeiculosService {
   this.http.patch<string>(`${this.apiUrl}/Checkout/${id}`, null, this.httpOptions).subscribe((data) => {
     console.log("request ok", data);
   });
-  return this.http.patch<string>(`${this.apiUrl}/Checkout/${id}`, null, this.httpOptions);
+  return this.http.patch<string>(`${this.apiUrl}/Checkout/`, null, this.httpOptions);
    
 }
 
@@ -41,9 +41,6 @@ export class VeiculosService {
 CadastrarVaga(cadastro: { modelo: string; placa: string }): Observable<any[]> {
   console.log(cadastro)
   console.log(`${this.apiUrl}/Create`, cadastro)
-  // this.http.post<string[]>(`${this.apiUrl}/Create`, cadastro,  this.httpOptions ).subscribe((data) => {
-  //   console.log("request ok", data);
-  // });
   return this.http.post<string[]>(`${this.apiUrl}/Create`, cadastro,  this.httpOptions );
 }
 
