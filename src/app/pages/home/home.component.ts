@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit {
    this.veiculosSevice.CheckVeiculos(veiculoId);
    console.log(veiculoId)
    this.reloadPage();
+   this.getVeiculosApi();
  }
 
  cadastrarVaga() {
@@ -60,12 +61,14 @@ export class HomeComponent implements OnInit {
     }
   );
   this.reloadPage();
+  this.getVeiculosApi();
 }
 
 deleteVeiculo(veiculoId: string) {
   this.veiculosSevice.DeleteVeiculos(veiculoId);
   console.log(veiculoId)
   this.reloadPage();
+  this.getVeiculosApi();
 }
 
   formatDecimal(value: number):

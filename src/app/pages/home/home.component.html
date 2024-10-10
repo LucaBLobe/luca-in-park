@@ -10,14 +10,18 @@
     <h2>Cadastrar Vaga</h2>
     <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
         <label for="placa">Placa:</label>
-        <input [(ngModel)]="vaga.placa" type="text" id="placa" name="placa" required>
+        <input [(ngModel)]="vaga.placa" type="text" required id="placa" name="placa" #placaModel="ngModel">
+
+        <div *ngIf="placaModel.invalid && placaModel.touched">
+            O campo Placa é obrigatório!
+        </div>
         <br><br>
 
         <label for="modelo">Modelo:</label>
         <input [(ngModel)]="vaga.modelo" type="text" id="modelo"  name="modelo" required>
         <br><br>
 
-        <button type="submit">Cadastrar</button>
+        <button [disabled]="placaModel.invalid" type="submit">Cadastrar</button>
     </form>
 </div>
 
@@ -54,7 +58,7 @@
             <td>inativo</td >
             </div>
             <td>
-                <button (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
+                <button *ngIf="veiculo.active == true" type="submit" (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
                 <button (click)="deleteVeiculo(veiculo.veiculoId)">Excluir</button>
             </td>
         </tr>
