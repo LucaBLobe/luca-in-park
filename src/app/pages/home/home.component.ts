@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { finalize } from 'rxjs';
 import { CadastroVaga } from 'src/app/Models/cadastro-model';
 import { Veiculo } from 'src/app/Models/Veiculos';
 import { VeiculosService } from 'src/app/services/veiculos.service';
@@ -15,6 +16,7 @@ export class HomeComponent implements OnInit {
   veiculosGeral: Veiculo[] = [];
   mostrarForm = false;
   vaga = { modelo: '', placa: ''};
+  isLoading = false;
   
 
 
@@ -45,9 +47,20 @@ export class HomeComponent implements OnInit {
   }
 
   checkVeiculo(veiculoId: string) {
-   this.veiculosSevice.CheckVeiculos(veiculoId);
+   this.veiculosSevice.CheckVeiculos(veiculoId).pipe(finalize(() => {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000); 
+  }))
+  .subscribe(
+    (resultado) => {
+      console.log('Operação concluída', resultado);
+    },
+    (erro) => {
+      console.error('Erro ao realizar operação', erro);
+      this.isLoading = false;  
+    });
    console.log(veiculoId)
-   this.reloadPage();
    this.getVeiculosApi();
  }
 
@@ -65,9 +78,20 @@ export class HomeComponent implements OnInit {
 }
 
 deleteVeiculo(veiculoId: string) {
-  this.veiculosSevice.DeleteVeiculos(veiculoId);
+  this.veiculosSevice.DeleteVeiculos(veiculoId).pipe(finalize(() => {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000); 
+  }))
+  .subscribe(
+    (resultado) => {
+      console.log('Operação concluída', resultado);
+    },
+    (erro) => {
+      console.error('Erro ao realizar operação', erro);
+      this.isLoading = false;  
+    });
   console.log(veiculoId)
-  this.reloadPage();
   this.getVeiculosApi();
 }
 
