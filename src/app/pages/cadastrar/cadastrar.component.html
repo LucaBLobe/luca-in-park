@@ -1,39 +1,96 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Cadastro</title>
-</head>
-<body>
 
-    <h2>Cadastro de Usuário</h2>
+<div class="vaga-box">
+    <button (click)="mostrarForm = !mostrarForm">Cadastrar nova vaga</button>
+    <div class="input-box">
+        <label>Procurar</label>
+        <input type="text" placeholder="buscar parametrização por data inicial" (input)="search($event)">
+    </div>
+</div>
 
-    <form id="cadastroForm">
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" required>
+<div *ngIf="mostrarForm">
+    <h2>Cadastrar Preço</h2>
+    <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
+        <label for="placa">Placa:</label>
+        <input [(ngModel)]="vaga.placa" type="text" required id="placa" name="placa" #placaModel="ngModel"
+        pattern="^[A-Z]{3}\d{4}$|^[A-Z]{3}\d{1}[A-Z]{1}\d{2}$"
+        maxlength="7"
+        minlength="7">
+        <div *ngIf="placaModel.invalid && placaModel.touched">
+            O campo Placa é obrigatório! E presisa estar em um dos formatos brasileiros: AAA1234 ou AAA1A23
+        </div>
         <br><br>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+
+        <label for="modelo">Modelo:</label>
+        <input [(ngModel)]="vaga.modelo" type="text" id="modelo"  name="modelo" required>
         <br><br>
-        
-        <button type="submit">Cadastrar</button>
+
+        <button [disabled]="placaModel.invalid" type="submit">Cadastrar</button>
     </form>
+</div>
 
-    <script>
-        document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
+<table class="table" *ngIf="!isLoading">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Placa</th>
+            <th>Modelo</th>
+            <th>Horário de Entrada</th>
+            <th>Horário de Saída</th>
+            <th>Tempo de Permanência</th>
+            <th>Horas Cobradas</th>
+            <th>Valor 1ª Hora</th>
+            <th>Valor Adicional</th>
+            <th>Valor Total</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let veiculo of veiculos">
+            <td></td>
+            <td>{{ veiculo.placa }}</td>
+            <td>{{ veiculo.modelo }}</td>
+            <td>{{ veiculo.startTime }}</td>
+            <td>{{ veiculo.endTime }}</td>
+            <td>{{ veiculo.duration }}</td>
+            <td>{{ veiculo.costFlag }}</td>
+            <td>{{ veiculo.precoInicial | number:'1.2-2'}}</td>
+            <td>{{ veiculo.precoAdicional | number:'1.2-2'}}</td>
+            <td>{{ veiculo.precoFinal | number:'1.2-2'}}</td>
+            <div *ngIf="veiculo.active == true">
+            <td>ativo</td>
+            </div>
+            <div *ngIf="veiculo.active == false">
+            <td>inativo</td >
+            </div>
+            <td>
+                <button [disabled]="isLoading" *ngIf="veiculo.active == true" type="submit" (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
+                <button [disabled]="isLoading" (click)="deleteVeiculo(veiculo.veiculoId)">Excluir</button>
+            </td>
+        </tr>
+    </tbody>
+ </table>
 
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
+ <div *ngIf="isLoading">
+    <p>Operação em andamento... Por favor, aguarde.</p>
+  </div>
 
-            console.log('Nome:', nome);
-            console.log('Email:', email);
-            
-            // Aqui você pode fazer uma requisição para salvar os dados no backend
-        });
-    </script>
+  <div *ngIf="mostrarForm">
+    <h2>Cadastrar Preço</h2>
+    <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
+        <label for="placa">Placa:</label>
+        <input [(ngModel)]="vaga.placa" type="text" required id="placa" name="placa" #placaModel="ngModel"
+        pattern="^[A-Z]{3}\d{4}$|^[A-Z]{3}\d{1}[A-Z]{1}\d{2}$"
+        maxlength="7"
+        minlength="7">
+        <div *ngIf="placaModel.invalid && placaModel.touched">
+            O campo Placa é obrigatório! E presisa estar em um dos formatos brasileiros: AAA1234 ou AAA1A23
+        </div>
+        <br><br>
 
-</body>
-</html>
+        <label for="modelo">Modelo:</label>
+        <input [(ngModel)]="vaga.modelo" type="text" id="modelo"  name="modelo" required>
+        <br><br>
+
+        <button [disabled]="placaModel.invalid" type="submit">Cadastrar</button>
+    </form>
+</div>

@@ -37,7 +37,6 @@ export class VeiculosService {
    
 }
 
-
 CadastrarVaga(cadastro: { modelo: string; placa: string }): Observable<any[]> {
   console.log(cadastro)
   console.log(`${this.apiUrl}/Create`, cadastro)
@@ -53,7 +52,6 @@ DeleteVeiculos(veiculoId: string) : Observable<string> {
   });
   return this.http.delete<string>(`${this.apiUrl}/DeletebyId/${id}`);
    
-}
-  
+}  
 }
 

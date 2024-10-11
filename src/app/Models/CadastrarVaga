@@ -1,4 +1,0 @@
-export interface CadastrarVaga{
-    placa: string,
-    modelo: string,
-  }
