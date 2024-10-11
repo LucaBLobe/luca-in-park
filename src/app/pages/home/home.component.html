@@ -1,23 +1,8 @@
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titulo</title>
-    <style>
-        h1 {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <h1>LucaInPark</h1>
-</body>
-
 <div class="vaga-box">
     <button (click)="mostrarForm = !mostrarForm">Cadastrar nova vaga</button>
     <div class="input-box">
         <label>Procurar</label>
-        <input type="text" placeholder="buscar registro de vaga por placa" (input)="search($event)">
+        <input type="text" placeholder="buscar registro de vaga" (input)="search($event)">
     </div>
 </div>
 
@@ -25,24 +10,18 @@
     <h2>Cadastrar Vaga</h2>
     <form id="cadastroForm" (ngSubmit)="cadastrarVaga()">
         <label for="placa">Placa:</label>
-        <input [(ngModel)]="vaga.placa" type="text" required id="placa" name="placa" #placaModel="ngModel"
-        pattern="^[A-Z]{3}\d{4}$|^[A-Z]{3}\d{1}[A-Z]{1}\d{2}$"
-        maxlength="7"
-        minlength="7">
-        <div *ngIf="placaModel.invalid && placaModel.touched">
-            O campo Placa é obrigatório! E presisa estar em um dos formatos brasileiros: AAA1234 ou AAA1A23
-        </div>
+        <input [(ngModel)]="vaga.placa" type="text" id="placa" name="placa" required>
         <br><br>
 
         <label for="modelo">Modelo:</label>
         <input [(ngModel)]="vaga.modelo" type="text" id="modelo"  name="modelo" required>
         <br><br>
 
-        <button [disabled]="placaModel.invalid" type="submit">Cadastrar</button>
+        <button type="submit">Cadastrar</button>
     </form>
 </div>
 
-<table class="table" *ngIf="!isLoading">
+<table class="table">
     <thead>
         <tr>
             <th></th>
@@ -51,9 +30,8 @@
             <th>Horário de Entrada</th>
             <th>Horário de Saída</th>
             <th>Tempo de Permanência</th>
-            <th>Horas Cobradas</th>
-            <th>Valor 1ª Hora</th>
-            <th>Valor Adicional</th>
+            <th>Bandeira</th>
+            <th>Valor Hora</th>
             <th>Valor Total</th>
             <th>Status</th>
         </tr>
@@ -67,8 +45,7 @@
             <td>{{ veiculo.endTime }}</td>
             <td>{{ veiculo.duration }}</td>
             <td>{{ veiculo.costFlag }}</td>
-            <td>{{ veiculo.precoInicial | number:'1.2-2'}}</td>
-            <td>{{ veiculo.precoAdicional | number:'1.2-2'}}</td>
+            <td>{{ veiculo.precoUnitario | number:'1.2-2'}}</td>
             <td>{{ veiculo.precoFinal | number:'1.2-2'}}</td>
             <div *ngIf="veiculo.active == true">
             <td>ativo</td>
@@ -77,60 +54,9 @@
             <td>inativo</td >
             </div>
             <td>
-                <button [disabled]="isLoading" *ngIf="veiculo.active == true" type="submit" (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
-                <button [disabled]="isLoading" (click)="deleteVeiculo(veiculo.veiculoId)">Excluir</button>
+                <button (click)="checkVeiculo(veiculo.veiculoId)">Checkout</button >
+                <button (click)="deleteVeiculo(veiculo.veiculoId)">Excluir</button>
             </td>
         </tr>
     </tbody>
  </table>
-
- <div class="vaga-box">
-    <button (click)="mostrarForm = !mostrarForm">Parametrizações de preço</button>
-</div>
-
-<div *ngIf="mostrarForm">
-    <div class="input-box">
-    </div>
-    <h2>Cadastrar Nova Parametrização</h2>
-    <form id="cadastroForm" (ngSubmit)="cadastrarPreco()">
-        <label for="placa">Inicio da Vigência:</label>
-        <input [(ngModel)]="preco.inicioVigencia" type="date" required id="dataInicial" name="dataInicial" #placaModel="ngModel"
->
-        <label for="modelo">Fim da Vigência:</label>
-        <input [(ngModel)]="preco.fimVigencia" type="date" id="dataFinal"  name="dataFinal" required>
-        <br><br>
-
-        <label for="modelo">Preço 1ª Hora:</label>
-        <input [(ngModel)]="preco.precoVigenciaInicial" type="text" id="precoInicial"  name="precoInicial" required>
-        <br><br>
-
-        <label for="modelo">Preço Adicional:</label>
-        <input [(ngModel)]="preco.precoVigenciaAdicional" type="text" id="precoAdicional"  name="precoAdicional" required>
-        <br><br>
-
-        <button [disabled]="placaModel.invalid" type="submit">Cadastrar</button>
-    </form>
-    <table class="table" *ngIf="!isLoading">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Data Inicial Vigencia</th>
-                <th>Data Final vigencia</th>
-                <th>Preço 1ª Hora</th>
-                <th>Preço adicional</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let tabelaPreco of tabelaPrecos">
-                <td></td>
-                <td>{{ tabelaPreco.inicioVigencia }}</td>
-                <td>{{ tabelaPreco.fimVigencia }}</td>
-                <td>{{ tabelaPreco.precoVigenciaInicial | number:'1.2-2'}}</td>
-                <td>{{ tabelaPreco.precoVigenciaAdicional | number:'1.2-2'}}</td>
-                <td>
-                    <button [disabled]="isLoading" (click)="deletePreco(tabelaPreco.id)">Excluir</button>
-                </td>
-            </tr>
-        </tbody>
-     </table>
-</div>

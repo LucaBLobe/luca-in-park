@@ -6,8 +6,7 @@ export interface Veiculo{
     endTime?: string,
     duration: string,
     costFlag: number,
-    precoInicial: number,
-    precoAdicional: number,
+    precoUnitario: number,
     precoFinal: number,
     active: boolean,
   }
